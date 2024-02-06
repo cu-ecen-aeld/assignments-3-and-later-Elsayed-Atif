@@ -30,10 +30,10 @@ MATCHSTR="The number of files are ${NUMFILES} and the number of matching lines a
 echo "Writing ${NUMFILES} files containing string ${WRITESTR} to ${WRITEDIR}"
 
 # Clean previous build artifacts (if any)
-make clean
+# make clean
 
 # Compile the writer application using native compilation
-make writer
+# make writer
 
 # Use the "writer" utility instead of "writer.sh"
 for i in $(seq 1 $NUMFILES); do
