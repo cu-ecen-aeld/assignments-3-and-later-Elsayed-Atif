@@ -8,39 +8,31 @@ set -u
 NUMFILES=10
 WRITESTR=AELD_IS_FUN
 WRITEDIR=/tmp/aeld-data
-username=$(cat conf/username.txt)
+username=$(cat /etc/finder-app/conf/username.txt) # Updated path
 
-if [ $# -lt 3 ]
-then
-	echo "Using default value ${WRITESTR} for string to write"
-	if [ $# -lt 1 ]
-	then
-		echo "Using default value ${NUMFILES} for number of files to write"
-	else
-		NUMFILES=$1
-	fi	
+if [ $# -lt 3 ]; then
+    echo "Using default value ${WRITESTR} for string to write"
+    if [ $# -lt 1 ]; then
+        echo "Using default value ${NUMFILES} for number of files to write"
+    else
+        NUMFILES=$1
+    fi  
 else
-	NUMFILES=$1
-	WRITESTR=$2
-	WRITEDIR=/tmp/aeld-data/$3
+    NUMFILES=$1
+    WRITESTR=$2
+    WRITEDIR=/tmp/aeld-data/$3
 fi
 
 MATCHSTR="The number of files are ${NUMFILES} and the number of matching lines are ${NUMFILES}"
 
 echo "Writing ${NUMFILES} files containing string ${WRITESTR} to ${WRITEDIR}"
 
-# Clean previous build artifacts (if any)
-# make clean
-
-# Compile the writer application using native compilation
-# make writer
-
-# Use the "writer" utility instead of "writer.sh"
+# Use the "writer" utility assuming it's in the PATH
 for i in $(seq 1 $NUMFILES); do
-    ./writer "$WRITEDIR/${username}$i.txt" "$WRITESTR"
+    writer "$WRITEDIR/${username}$i.txt" "$WRITESTR" # Assume 'writer' is in PATH
 done
 
-OUTPUTSTRING=$(./finder.sh "$WRITEDIR" "$WRITESTR")
+OUTPUTSTRING=$(finder.sh "$WRITEDIR" "$WRITESTR" | tee /tmp/assignment4-result.txt) # Assume 'finder.sh' is in PATH
 
 # Remove temporary directories
 rm -rf /tmp/aeld-data
